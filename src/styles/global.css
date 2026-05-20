@@ -500,6 +500,22 @@ a:hover {
     padding-top: 3rem;
   }
 
+  .home-title {
+    font-size: clamp(2.7rem, 14vw, 4.4rem);
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+  }
+
+  .home-copy {
+    font-size: 1rem;
+    line-height: 1.68;
+    margin-top: 1.7rem;
+  }
+
+  .page-title {
+    font-size: clamp(2.4rem, 12vw, 3.8rem);
+  }
+
   .publication-item,
   .article-layout {
     grid-template-columns: 1fr;
