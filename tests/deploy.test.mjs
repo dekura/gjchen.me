@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { test } from "node:test";
 
 test("GitHub Pages deploy script targets the existing dekura.github.io repo safely", async () => {
@@ -13,4 +13,5 @@ test("GitHub Pages deploy script targets the existing dekura.github.io repo safe
   assert.match(deployScript, /syncDistToLegacyRepo/);
   assert.match(deployScript, /git\(\["commit"/);
   assert.match(deployScript, /git\(\["push"/);
+  await stat("public/.nojekyll");
 });
