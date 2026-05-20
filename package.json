@@ -1,0 +1,36 @@
+{
+  "name": "personal-homepage",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/build-research.mjs && astro check && astro build",
+    "build:research": "node scripts/build-research.mjs",
+    "dev:full": "npm run build && astro preview --host 127.0.0.1",
+    "deploy": "node scripts/deploy-github-pages.mjs --push",
+    "deploy:stage": "node scripts/deploy-github-pages.mjs",
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/react": "^5.0.5",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
+    "@fontsource-variable/geist-mono": "^5.2.8",
+    "@fontsource-variable/instrument-sans": "^5.2.8",
+    "@fontsource-variable/newsreader": "^5.2.10",
+    "@tailwindcss/postcss": "^4.3.0",
+    "astro": "^6.3.5",
+    "astro-expressive-code": "^0.42.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "rehype-citation": "^2.3.2",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3"
+  }
+}

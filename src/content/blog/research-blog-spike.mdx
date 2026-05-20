@@ -1,0 +1,36 @@
+---
+title: "Research Blogging Spike"
+description: "A test article proving that this homepage can render math, citations, and code."
+date: 2026-05-20
+tags: ["research", "meta"]
+featured: true
+draft: false
+---
+
+## Why this exists
+
+This post is a small integration test for the writing system. It should support
+math, citations, and code without turning the site into a heavy application.
+
+Inline math works: $L(\theta)=\mathbb{E}_{x \sim D}[\ell(f_\theta(x), y)]$.
+
+Block math works too:
+
+$$
+\nabla_\theta L(\theta) =
+\frac{1}{N}\sum_{i=1}^{N}\nabla_\theta \ell(f_\theta(x_i), y_i)
+$$
+
+The citation pipeline should resolve BibTeX references such as [@ICCAD20_damo].
+
+## Code
+
+```ts title="agentic-loop.ts"
+export async function improve(prompt: string) {
+  const plan = await model.plan(prompt);
+  const result = await sandbox.run(plan);
+  return evaluator.score(result);
+}
+```
+
+[^ref]

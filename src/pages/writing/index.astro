@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Writing" description="Research notes and essays by Guojin Chen.">
+  <section class="shell page-hero">
+    <p class="eyebrow">Writing</p>
+    <h1 class="page-title">
+      Research notes, technical essays, and field reports.
+    </h1>
+  </section>
+
+  <section class="shell section">
+    <div class="content-list">
+      {
+        posts.map((post) => (
+          <a class="content-item" href={`/writing/${post.id}/`}>
+            <div class="content-meta">
+              <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0, 10)}</time>
+              <span>{post.data.tags.join(" · ")}</span>
+            </div>
+            <h2 class="content-title">{post.data.title}</h2>
+            <p class="content-description">{post.data.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const sparkles = (await getCollection("sparkles")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout title="Sparkles" description="Curated links and short notes.">
+  <section class="shell page-hero">
+    <p class="eyebrow">Sparkles</p>
+    <h1 class="page-title">
+      Curiosities worth keeping in public.
+    </h1>
+  </section>
+
+  <section class="shell section">
+    <div class="content-list">
+      {
+        sparkles.map((sparkle) => (
+          <a class="content-item" href={sparkle.data.source}>
+            <div class="content-meta">
+              <time datetime={sparkle.data.date.toISOString()}>{sparkle.data.date.toISOString().slice(0, 10)}</time>
+              <span>{sparkle.data.tags.join(" · ")}</span>
+            </div>
+            <h2 class="content-title">{sparkle.data.title}</h2>
+            <p class="content-description">{sparkle.data.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

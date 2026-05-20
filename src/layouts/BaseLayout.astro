@@ -1,0 +1,68 @@
+---
+import { site } from "@/data/site";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import "katex/dist/katex.min.css";
+import "@fontsource-variable/instrument-sans/index.css";
+import "@fontsource-variable/newsreader/index.css";
+import "@fontsource-variable/geist-mono/index.css";
+import "@/styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const title = Astro.props.title
+  ? `${Astro.props.title} | ${site.name}`
+  : site.title;
+const description = Astro.props.description ?? site.description;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, site.url)} />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem("theme");
+        const theme = stored === "light" || stored === "dark" ? stored : "dark";
+        document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="shell site-header">
+      <a class="site-title" href="/">{site.name}</a>
+      <div class="site-header-actions">
+        <nav class="site-nav">
+          {
+            site.nav.map((item) => (
+              <a href={item.href}>
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+        <ThemeToggle />
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="shell site-footer">
+      <span>© {new Date().getFullYear()} Guojin Chen</span>
+      <nav>
+        {site.social.map((item) => <a href={item.href}>{item.label}</a>)}
+      </nav>
+    </footer>
+  </body>
+</html>

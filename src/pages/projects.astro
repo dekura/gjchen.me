@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const projects = await getCollection("projects");
+---
+
+<BaseLayout title="Projects" description="Selected projects by Guojin Chen.">
+  <section class="shell page-hero">
+    <p class="eyebrow">Projects</p>
+    <h1 class="page-title">
+      Things I build to make research executable.
+    </h1>
+  </section>
+
+  <section class="shell section card-grid">
+    {
+      projects.map((project) => (
+        <article class="card">
+          <p class="content-meta">
+            {project.data.tags.join(" · ")}
+          </p>
+          <h2 class="content-title">{project.data.title}</h2>
+          <p class="content-description">{project.data.description}</p>
+          {project.data.link && <a class="text-link" href={project.data.link}>Open project</a>}
+        </article>
+      ))
+    }
+  </section>
+</BaseLayout>
