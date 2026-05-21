@@ -9,8 +9,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         Guojin Chen · Researcher in Hong Kong
       </p>
 
-      <h1 class="home-title">
-        I work on foundation models for agentic systems.
+      <h1
+        class="home-title"
+        aria-label="Hi, I'm Miles. I work on agentic models, agentic data infra, and RL enviroments."
+      >
+        <span class="home-title-static">Hi, I'm Miles. I work on</span>
+        <span class="home-title-dynamic" data-hero-phrase aria-live="polite">
+          agentic models
+        </span>
       </h1>
 
       <div class="home-copy">
@@ -36,3 +42,84 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import { animate } from "motion";
+
+  const phrases = ["agentic models", "agentic data infra", "RL enviroments"];
+  const phraseElement = document.querySelector("[data-hero-phrase]");
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  const sleep = (duration: number): Promise<void> =>
+    new Promise((resolve) => {
+      window.setTimeout(resolve, duration);
+    });
+
+  if (phraseElement instanceof HTMLElement && !prefersReducedMotion) {
+    let isActive = true;
+
+    document.addEventListener(
+      "astro:before-swap",
+      () => {
+        isActive = false;
+      },
+      { once: true },
+    );
+
+    const typePhrase = async (phrase: string) => {
+      phraseElement.textContent = "";
+
+      await animate(
+        phraseElement,
+        {
+          opacity: [0, 1],
+          transform: [
+            "translate3d(0, 0.12em, 0)",
+            "translate3d(0, 0, 0)",
+          ],
+        },
+        { duration: 0.22, ease: "easeOut" },
+      );
+
+      for (let index = 1; index <= phrase.length && isActive; index += 1) {
+        phraseElement.textContent = phrase.slice(0, index);
+        await sleep(46);
+      }
+    };
+
+    const erasePhrase = async (phrase: string) => {
+      for (let index = phrase.length; index >= 0 && isActive; index -= 1) {
+        phraseElement.textContent = phrase.slice(0, index);
+        await sleep(28);
+      }
+
+      await animate(
+        phraseElement,
+        {
+          opacity: 0,
+          transform: "translate3d(0, -0.08em, 0)",
+        },
+        { duration: 0.18, ease: "easeIn" },
+      );
+    };
+
+    const runPhraseLoop = async () => {
+      let phraseIndex = 0;
+
+      while (isActive) {
+        const phrase = phrases[phraseIndex];
+
+        await typePhrase(phrase);
+        await sleep(1100);
+        await erasePhrase(phrase);
+        await sleep(220);
+
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+      }
+    };
+
+    void runPhraseLoop();
+  }
+</script>

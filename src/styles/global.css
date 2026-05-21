@@ -196,14 +196,62 @@ a:hover {
 }
 
 .home-title {
+  align-items: baseline;
+  column-gap: 0.28em;
+  display: flex;
+  flex-wrap: wrap;
   font-family: var(--font-display);
-  font-size: clamp(2.7rem, 6.2vw, 5.4rem);
+  font-size: clamp(2rem, 3.85vw, 3.35rem);
   font-variation-settings: "opsz" 54;
   font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
   margin: 0;
+  row-gap: 0.08em;
   text-wrap: balance;
+}
+
+.home-title-static,
+.home-title-dynamic {
+  display: inline-block;
+}
+
+.home-title-dynamic {
+  color: color-mix(in oklab, var(--accent), var(--foreground) 24%);
+  min-width: 7.8em;
+  position: relative;
+  text-shadow: 0 0 22px color-mix(in oklab, var(--accent), transparent 86%);
+  white-space: nowrap;
+  will-change: opacity, transform;
+}
+
+.home-title-dynamic::after {
+  animation: hero-caret-blink 1.05s steps(2, end) infinite;
+  background: color-mix(in oklab, var(--accent), var(--foreground) 16%);
+  border-radius: 999px;
+  content: "";
+  display: inline-block;
+  height: 0.76em;
+  margin-left: 0.1em;
+  transform: translateY(0.08em);
+  width: 0.055em;
+}
+
+@keyframes hero-caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-title-dynamic {
+    will-change: auto;
+  }
+
+  .home-title-dynamic::after {
+    animation: none;
+    opacity: 0.65;
+  }
 }
 
 .home-copy {
@@ -502,9 +550,13 @@ a:hover {
   }
 
   .home-title {
-    font-size: clamp(1.95rem, 8.5vw, 2.8rem);
+    font-size: clamp(1.65rem, 7vw, 2.25rem);
     letter-spacing: -0.02em;
     line-height: 1.1;
+  }
+
+  .home-title-dynamic {
+    min-width: 0;
   }
 
   .home-copy {
