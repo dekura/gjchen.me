@@ -5,27 +5,31 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const readingMinutes = (body?: string) =>
+  Math.max(1, Math.round((body ?? "").trim().split(/\s+/).filter(Boolean).length / 220));
 ---
 
 <BaseLayout title="Writing" description="Research notes and essays by Guojin Chen.">
-  <section class="shell page-hero">
+  <section class="shell page-hero writing-hero">
     <p class="eyebrow">Writing</p>
     <h1 class="page-title">
       Research notes, technical essays, and field reports.
     </h1>
   </section>
 
-  <section class="shell section">
-    <div class="content-list">
+  <section class="shell section writing-section">
+    <div class="writing-list">
       {
         posts.map((post) => (
-          <a class="content-item" href={`/writing/${post.id}/`}>
-            <div class="content-meta">
+          <a class="writing-item" href={`/writing/${post.id}/`}>
+            <div class="writing-meta">
               <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0, 10)}</time>
-              <span>{post.data.tags.join(" · ")}</span>
+              <span>{readingMinutes(post.body)} min read</span>
+              {post.data.tags.length > 0 && <span>{post.data.tags.join(" · ")}</span>}
             </div>
-            <h2 class="content-title">{post.data.title}</h2>
-            <p class="content-description">{post.data.description}</p>
+            <h2 class="writing-title">{post.data.title}</h2>
+            <p class="writing-description">{post.data.description}</p>
           </a>
         ))
       }
