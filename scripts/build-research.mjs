@@ -8,12 +8,14 @@ const execFileAsync = promisify(execFile);
 const root = path.resolve(import.meta.dirname, "..");
 const cvRoot = path.resolve(root, "..", "cv");
 const cvPdf = path.join(cvRoot, "build", "cv.pdf");
+const cvBib = path.join(cvRoot, "publications", "all.bib");
 const legacyRoot = path.resolve(root, "..", "dekura.github.io");
 const legacySite = path.join(legacyRoot, "_site");
 const legacyPublishedResearch = path.join(legacyRoot, "research");
 // Static output target: public/research
 const outputRoot = path.join(root, "public", "research");
 const outputCvPdf = path.join(outputRoot, "data", "cv.pdf");
+const outputBib = path.join(outputRoot, "data", "bibtex", "all.bib");
 
 const textExtensions = new Set([
   ".html",
@@ -85,6 +87,13 @@ async function copyCvIntoResearch() {
   await cp(cvPdf, outputCvPdf);
 }
 
+async function copyBibIntoResearch() {
+  if (!existsSync(cvBib)) return;
+
+  await mkdir(path.dirname(outputBib), { recursive: true });
+  await cp(cvBib, outputBib);
+}
+
 async function main() {
   await buildCv();
 
@@ -111,6 +120,7 @@ async function main() {
   }
 
   await copyCvIntoResearch();
+  await copyBibIntoResearch();
   await rewriteTree(outputRoot);
 }
 
